@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Clínica Paula Velasquez</title>
+<style>
+body{font-family:Arial;background:#eef2f7;padding:20px}
+h1{text-align:center;color:#2b6cb0}
+.caja{background:white;padding:20px;border-radius:15px;max-width:600px;margin:15px auto;box-shadow:0 0 10px #ccc}
+input,button{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ccc}
+button{background:#2b6cb0;color:white;border:none;cursor:pointer;font-weight:bold}
+button:hover{background:#1a4d8f}
+</style>
+</head>
+<body>
+<h1>🏥 Clínica Paula Velasquez</h1>
+
+<div class="caja">
+<h2>Registrar Paciente</h2>
+<input id="pNombre" placeholder="Nombre del paciente">
+<input id="pDocumento" placeholder="Documento">
+<input id="pTelefono" placeholder="Teléfono">
+<input id="pEmail" placeholder="Correo">
+<button onclick="crearPaciente()">Guardar Paciente</button>
+</div>
+
+<div class="caja">
+<h2>Registrar Médico</h2>
+<input id="mNombre" placeholder="Nombre del médico">
+<input id="mEspecialidad" placeholder="Especialidad">
+<input id="mTelefono" placeholder="Teléfono">
+<button onclick="crearMedico()">Guardar Médico</button>
+</div>
+
+<div class="caja">
+<h2>Registrar Cita</h2>
+<input id="cPaciente" placeholder="ID del paciente">
+<input id="cMedico" placeholder="ID del médico">
+<input type="date" id="cFecha">
+<input id="cMotivo" placeholder="Motivo de la cita">
+<button onclick="crearCita()">Guardar Cita</button>
+</div>
+
+<script>
+const API = "http://localhost:3000/api";
+async function crearPaciente(){
+  const datos = { nombre: document.getElementById('pNombre').value, documento: document.getElementById('pDocumento').value, telefono: document.getElementById('pTelefono').value, email: document.getElementById('pEmail').value };
+  const res = await fetch(API + "/pacientes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+  const data = await res.json();
+  alert("Paciente guardado! ID: " + data._id);
+}
+async function crearMedico(){
+  const datos = { nombre: document.getElementById('mNombre').value, especialidad: document.getElementById('mEspecialidad').value, telefono: document.getElementById('mTelefono').value };
+  const res = await fetch(API + "/medicos", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+  const data = await res.json();
+  alert("Médico guardado! ID: " + data._id);
+}
+async function crearCita(){
+  const datos = { paciente: document.getElementById('cPaciente').value, medico: document.getElementById('cMedico').value, fecha: document.getElementById('cFecha').value, motivo: document.getElementById('cMotivo').value };
+  const res = await fetch(API + "/citas", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(datos) });
+  const data = await res.json();
+  alert("Cita guardada!");
+}
+</script>
+</body>
+</html>
